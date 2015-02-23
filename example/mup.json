@@ -22,11 +22,15 @@
   // Install PhantomJS in the server
   "setupPhantom": true,
 
+  // Install Nginx on the server (Requires a unique PORT and ROOT_URL in the environment settings
+  // Note: Port must not be 80 as Nginx will proxy_forward to port 80 per ROOT_URL (e.g. 3000, 3001, 3002, etc)
+  "setupNginx": false,
+
   // Application name (No spaces)
   "appName": "meteor",
 
   // Location of app (local directory)
-  "app": "/path/to/the/app",
+  "app": ".",
 
   // Configure environment
   "env": {
