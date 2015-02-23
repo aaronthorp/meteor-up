@@ -23,14 +23,22 @@
   "setupPhantom": true,
 
 <<<<<<< HEAD
+<<<<<<< HEAD
   // Install Nginx on the server (Requires a unique PORT and ROOT_URL in the environment settings
   // Note: Port must not be 80 as Nginx will proxy_forward to port 80 per ROOT_URL (e.g. 3000, 3001, 3002, etc)
   "setupNginx": false,
 =======
   // Show a progress bar during the upload of the bundle to the server. 
+=======
+  // Show a progress bar during the upload of the bundle to the server.
+>>>>>>> add nginx multiple app support
   // Might cause an error in some rare cases if set to true, for instance in Shippable CI
   "enableUploadProgressBar": true,
 >>>>>>> Changed uploadProgressBar to enableUploadProgressBar and add documentation for it
+
+  // Install Nginx on the server (Requires a unique PORT and ROOT_URL in the environment settings
+  // Note: Port must not be 80 as Nginx will proxy_forward to port 80 per ROOT_URL (e.g. 3000, 3001, 3002, etc)
+  "setupNginx": false,
 
   // Application name (No spaces)
   "appName": "meteor",

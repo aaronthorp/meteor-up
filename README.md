@@ -123,6 +123,10 @@ This will create two files in your Meteor Up project directory:
   // Might cause an error in some rare cases if set to true, for instance in Shippable CI
   "enableUploadProgressBar": true,
 
+  // Install Nginx on the server (Requires a unique PORT and ROOT_URL in the environment settings
+  // Note: Port must not be 80 as Nginx will proxy_forward to port 80 per ROOT_URL (e.g. 3000, 3001, 3002, etc)
+  "setupNginx": true,
+
   // Application name (no spaces).
   "appName": "meteor",
 
