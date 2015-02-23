@@ -10,6 +10,7 @@ Meteor Up (mup for short) is a command line tool that allows you to deploy any [
 
 - [Features](#features)
 - [Server Configuration](#server-configuration)
+- [Nginx Multiple App Hosting](#server-nginx)
 - [Installation](#installation)
 - [Creating a Meteor Up Project](#creating-a-meteor-up-project)
 - [Example File](#example-file)
@@ -48,6 +49,14 @@ Meteor Up (mup for short) is a command line tool that allows you to deploy any [
 * Revert to the previous version, if the deployment failed
 * Secured MongoDB Installation (Optional)
 * Pre-Installed PhantomJS (Optional)
+
+### Server Nginx
+
+* Host multiple applications on a single server
+* Define a unique port and ROOT_URL for each instance and Nginx will proxy forward accordingly
+* Prevents multiple deployments of the same port on a single server
+* add `setupNginx:true` to `mup.json` and specify a `PORT` and `ROOT_URL` in the environment variables
+* Provide a unique `appName` for each app. This will install it into its own folder and own upstart on the server.
 
 ### Installation
 
