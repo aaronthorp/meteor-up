@@ -57,6 +57,7 @@ Meteor Up (mup for short) is a command line tool that allows you to deploy any [
 * Prevents multiple deployments of the same port on a single server
 * add `setupNginx:true` to `mup.json` and specify a `PORT` and `ROOT_URL` in the environment variables
 * Provide a unique `appName` for each app. This will install it into its own folder and own upstart on the server.
+* Serve files from the `/public` folder directly through Nginx with caching instead of Meteor directly `(jpg|jpeg|png|gif|mp3|ico|pdf)`
 
 ### Installation
 
