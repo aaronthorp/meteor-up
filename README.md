@@ -267,6 +267,33 @@ Now setup both projects and deploy as you need.
 
 ### SSL Support
 
+Meteor Up now supports both stud and nginx SSL termination for your app.
+
+#### Nginx SSL Configuration
+
+* Place your certficate and private key files in a folder (suggestion is to use `.ssl` in your project folder)
+* Add the following lines to your `mup.json` file:
+
+~~~js
+{
+  ...
+
+  "ssl": {
+    "pem": "./.ssl/cert.pem",
+    "key": "./.ssl/private.key"
+  }
+
+  ...
+}
+~~~
+
+* Run `mup deploy` on a preconfigured Nginx+MUP host.
+* you will now be able to browse to your website address and it will automatcially promote it to SSL.
+
+**Note:** Be sure to add the `https://` path to your `ROOT_URL` enviromnent variable also!
+
+#### Stud SSL Configuration
+
 Meteor Up has the built in SSL support. It uses [stud](https://github.com/bumptech/stud) SSL terminator for that. First you need to get a SSL certificate from some provider. This is how to do that:
 
 * [First you need to generate a CSR file and the private key](http://www.rackspace.com/knowledge_center/article/generate-a-csr-with-openssl)
