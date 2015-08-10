@@ -16,6 +16,7 @@ You can use install and use Meteor Up from Linux, Mac and Windows.
 
 - [Features](#features)
 - [Server Configuration](#server-configuration)
+    - [SSH-key-based authentication (with passphrase)](#ssh-keys-with-passphrase-or-ssh-agent-support)
 - [Nginx Multiple App Hosting](#server-nginx)
 - [Installation](#installation)
 - [Creating a Meteor Up Project](#creating-a-meteor-up-project)
@@ -370,7 +371,7 @@ You should try and keep `mup` up to date in order to keep up with the latest Met
 
 #### Check Access
 
-Your issue might not always be related to Meteor Up. So make sure you can connect to your instance first, and that your credentials are working properly. 
+Your issue might not always be related to Meteor Up. So make sure you can connect to your instance first, and that your credentials are working properly.
 
 #### Check Logs
 If you suddenly can't deploy your app anymore, first use the `mup logs -f` command to check the logs for error messages.
