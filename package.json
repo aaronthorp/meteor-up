@@ -1,7 +1,7 @@
 {
-  "name": "mup",
+  "name": "mup-multi",
   "version": "0.11.3",
-  "description": "Production Quality Meteor Deployments",
+  "description": "Production Quality Meteor Deployments using Nginx",
   "dependencies": {
     "async": "^0.9.0",
     "cjson": "0.3.x",
@@ -13,12 +13,15 @@
     "archiver": "0.14.x"
   },
   "bin": {
-    "mup": "./bin/mup"
+    "mup-multi": "./bin/mup"
   },
-  "author": "Arunoda Susiripala <arunoda.susiripala@gmail.com>",
+  "author": [
+    "Arunoda Susiripala <arunoda.susiripala@gmail.com>",
+    "Tim Brandin <tim.brandin@gmail.com>"
+  ],
   "repository": {
     "type": "git",
-    "url": "git://github.com/arunoda/meteor-up.git"
+    "url": "git://github.com/studiointeract/meteor-up-multi.git"
   },
   "license": "MIT"
 }
