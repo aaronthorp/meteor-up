@@ -14,4 +14,4 @@ sudo apt-get install nginx -y
 sudo service nginx stop || :
 sudo service nginx start
 
-sudo chmod g+w /usr/share/nginx/html/index.html
+sudo chmod o+w /usr/share/nginx/html/index.html
