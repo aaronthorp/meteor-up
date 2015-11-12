@@ -40,7 +40,7 @@ if [ -r $SITE_AVAILABLE ]; then
   fi
   ## Test for a well formed configuration.
   echo "Testing nginx configuration..."
-  $NGINX -t && STATUS=0
+  sudo $NGINX -t && STATUS=0
   if [ $STATUS ]; then
       echo -n "Site $1 has been enabled. "
   else
@@ -52,7 +52,7 @@ else
 fi
 
 echo "Testing nginx configuration..."
-$NGINX -t && STATUS=0
+sudo $NGINX -t && STATUS=0
 if [ $STATUS ]; then
     echo -n "Site $1 has been enabled. "
 else
@@ -60,3 +60,6 @@ else
 fi
 
 sudo service nginx reload
+
+sudo chmod -R og-w /etc/nginx/sites-available/
+sudo chmod -R og-w /etc/nginx/sites-enabled/

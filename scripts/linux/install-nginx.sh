@@ -13,3 +13,5 @@ sudo apt-get install nginx -y
 # Restart nginx
 sudo service nginx stop || :
 sudo service nginx start
+
+sudo chmod o+w /usr/share/nginx/html/index.html

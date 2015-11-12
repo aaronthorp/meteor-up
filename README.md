@@ -1,22 +1,30 @@
 # Meteor Up
 
+> We are working on the next version of Meteor Up with more stability and fast deployments.
+> For that we use Docker behind the scene.
+> Check it out: https://github.com/arunoda/meteor-up/tree/mupx#
+
 #### Production Quality Meteor Deployments
 
 Meteor Up (mup for short) is a command line tool that allows you to deploy any [Meteor](http://meteor.com) app to your own server. It supports only Debian/Ubuntu flavours and Open Solaris at the moments. (PRs are welcome)
 
-> Screencast: [How to deploy a Meteor app with Meteor Up (by Sacha Grief)](https://www.youtube.com/watch?v=WLGdXtZMmiI)
+You can use install and use Meteor Up from Linux, Mac and Windows.
+
+> Screencast: [How to deploy a Meteor app with Meteor Up (by Sacha Greif)](https://www.youtube.com/watch?v=WLGdXtZMmiI)
 
 **Table of Contents**
 
 - [Features](#features)
 - [Server Configuration](#server-configuration)
+    - [SSH-key-based authentication (with passphrase)](#ssh-keys-with-passphrase-or-ssh-agent-support)
 - [Nginx Multiple App Hosting](#server-nginx)
 - [Installation](#installation)
 - [Creating a Meteor Up Project](#creating-a-meteor-up-project)
 - [Example File](#example-file)
 - [Setting Up a Server](#setting-up-a-server)
-    - [Server Setup Details](#server-setup-details)
 - [Deploying an App](#deploying-an-app)
+- [Additional Setup/Deploy Information](#additional-setupdeploy-information)
+    - [Server Setup Details](#server-setup-details)
     - [Deploy Wait Time](#deploy-wait-time)
     - [Multiple Deployment Targets](#multiple-deployment-targets)
 - [Access Logs](#access-logs)
@@ -63,8 +71,6 @@ Meteor Up (mup for short) is a command line tool that allows you to deploy any [
 
     npm install -g mup
 
-If you are looking for password-based authentication, you need to [install sshpass](https://gist.github.com/arunoda/7790979) on your local development machine.
-
 ### Creating a Meteor Up Project
 
     mkdir ~/my-meteor-deployment
@@ -87,12 +93,11 @@ This will create two files in your Meteor Up project directory:
     {
       "host": "hostname",
       "username": "root",
-      "password": "password"
+      "password": "password",
       // or pem file (ssh based authentication)
-      // WARNING: Keys protected by a passphrase are not supported
-      //"pem": "~/.ssh/id_rsa"
+      //"pem": "~/.ssh/id_rsa",
       // Also, for non-standard ssh port use this
-      //"sshOptions": { "Port" : 49154 },
+      //"sshOptions": { "port" : 49154 },
       // server specific environment variables
       "env": {}
     }
@@ -104,11 +109,15 @@ This will create two files in your Meteor Up project directory:
   // WARNING: Node.js is required! Only skip if you already have Node.js installed on server.
   "setupNode": true,
 
-  // WARNING: nodeVersion defaults to 0.10.33 if omitted. Do not use v, just the version number.
-  "nodeVersion": "0.10.33",
+  // WARNING: nodeVersion defaults to 0.10.36 if omitted. Do not use v, just the version number.
+  "nodeVersion": "0.10.36",
 
   // Install PhantomJS on the server
   "setupPhantom": true,
+
+  // Show a progress bar during the upload of the bundle to the server.
+  // Might cause an error in some rare cases if set to true, for instance in Shippable CI
+  "enableUploadProgressBar": true,
 
   // Install Nginx on the server (Requires a unique PORT and ROOT_URL in the environment settings
   // Note: Port must not be 80 as Nginx will proxy_forward to port 80 per ROOT_URL (e.g. 3000, 3001, 3002, etc)
@@ -144,9 +153,41 @@ This will create two files in your Meteor Up project directory:
 
 This will setup the server for the `mup` deployments. It will take around 2-5 minutes depending on the server's performance and network availability.
 
-#### Ssh based authentication
+### Deploying an App
+
+    mup deploy
+
+This will bundle the Meteor project and deploy it to the server.
+
+### Additional Setup/Deploy Information
+
+#### Deploy Wait Time
+
+Meteor Up checks if the deployment is successful or not just after the deployment. By default, it will wait 10 seconds before the check. You can configure the wait time with the `deployCheckWaitTime` option in the `mup.json`
+
+#### SSH keys with passphrase (or ssh-agent support)
+
+> This only tested with Mac/Linux
+
+With the help of `ssh-agent`, `mup` can use SSH keys encrypted with a
+passphrase.
+
+Here's the process:
+
+* First remove your `pem` field from the `mup.json`. So, your `mup.json` only has the username and host only.
+* Then start a ssh agent with `eval $(ssh-agent)`
+* Then add your ssh key with `ssh-add <path-to-key>`
+* Then you'll asked to enter the passphrase to the key
+* After that simply invoke `mup` commands and they'll just work
+* Once you've deployed your app kill the ssh agent with `ssh-agent -k`
+
+#### Ssh based authentication with `sudo`
+
+**If your username is `root`, you don't need to follow these steps**
 
 Please ensure your key file (pem) is not protected by a passphrase. Also the setup process will require NOPASSWD access to sudo. (Since Meteor needs port 80, sudo access is required.)
+
+Make sure you also add your ssh key to the ```/YOUR_USERNAME/.ssh/authorized_keys``` list
 
 You can add your user to the sudo group:
 
@@ -178,16 +219,6 @@ This is how Meteor Up will configure the server for you based on the given `appN
 * the database is named `<appName>`
 
 For more information see [`lib/taskLists.js`](https://github.com/arunoda/meteor-up/blob/master/lib/taskLists.js).
-
-### Deploying an App
-
-    mup deploy
-
-This will bundle the Meteor project and deploy it to the server.
-
-#### Deploy Wait Time
-
-Meteor Up checks if the deployment is successful or not just after the deployment. By default, it will wait 10 seconds before the check. You can configure the wait time with the `deployCheckWaitTime` option in the `mup.json`.
 
 #### Multiple Deployment Targets
 
@@ -241,7 +272,7 @@ It is possible to provide server specific environment variables. Add the `env` o
     {
       "host": "hostname",
       "username": "root",
-      "password": "password"
+      "password": "password",
       "env": {
         "SOME_ENV": "the-value"
       }
@@ -303,7 +334,7 @@ Meteor Up has the built in SSL support. It uses [stud](https://github.com/bumpte
 * When asked to select your SSL server type, select it as nginx.
 * Then you'll get a set of files (your domain certificate and CA files).
 
-Now you need combine SSL certificate(s) with the private key and save it in the mup config directory as `ssl.pem`. Check this [guide](http://alexnj.com/blog/configuring-a-positivessl-certificate-with-stud.html) to do that.
+Now you need combine SSL certificate(s) with the private key and save it in the mup config directory as `ssl.pem`. Check this [guide](http://alexnj.com/blog/configuring-a-positivessl-certificate-with-stud) to do that.
 
 Then add following configuration to your `mup.json` file.
 
@@ -336,6 +367,10 @@ To update `mup` to the latest version, just type:
 You should try and keep `mup` up to date in order to keep up with the latest Meteor changes. But note that if you need to update your Node version, you'll have to run `mup setup` again before deploying.
 
 ### Troubleshooting
+
+#### Check Access
+
+Your issue might not always be related to Meteor Up. So make sure you can connect to your instance first, and that your credentials are working properly.
 
 #### Check Logs
 If you suddenly can't deploy your app anymore, first use the `mup logs -f` command to check the logs for error messages.
